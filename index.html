@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indikarigar — Handcrafted by Indian Artisans</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indi: {
+                            forest: '#1a2e1a',
+                            deep: '#0f1f0f',
+                            moss: '#2d4a2d',
+                            sage: '#4a6b4a',
+                            gold: '#c9a96e',
+                            goldLight: '#e8d5a3',
+                            goldDark: '#a08050',
+                            cream: '#f5f0e8',
+                            warm: '#e8dfd0',
+                            brown: '#3d2b1f',
+                            earth: '#5c4033',
+                            charcoal: '#1a1a1a',
+                            ivory: '#faf8f5'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'Playfair Display', 'serif'],
+                        display: ['Playfair Display', 'serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'shimmer': 'shimmer 3s ease-in-out infinite',
+                        'fade-up': 'fadeUp 0.8s ease-out forwards',
+                        'scale-in': 'scaleIn 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        },
+                        fadeUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        scaleIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            --cursor-size: 20px;
+        }
+        
+        * {
+            cursor: none;
+        }
+        
+        body {
+            background-color: #0f1f0f;
+            color: #f5f0e8;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #c9a96e;
+        }
+        
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(201, 169, 110, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        
+        .cursor-outline.hover {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(201, 169, 110, 0.1);
+            border-color: #c9a96e;
+        }
+        
+        /* Grain Texture Overlay */
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0f1f0f;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #2d4a2d;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c9a96e;
+        }
+        
+        /* Text Selection */
+        ::selection {
+            background: rgba(201, 169, 110, 0.3);
+            color: #f5f0e8;
+        }
+        
+        /* Hero Parallax */
+        .hero-image {
+            will-change: transform;
+        }
+        
+        /* Magnetic Button */
+        .magnetic-btn {
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        /* Image Hover */
+        .img-reveal {
+            clip-path: inset(0 100% 0 0);
+            transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        
+        .img-reveal.revealed {
+            clip-path: inset(0 0 0 0);
+        }
+        
+        /* Gold Gradient Text */
+        .text-gold-gradient {
+            background: linear-gradient(135deg, #c9a96e 0%, #e8d5a3 50%, #a08050 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Separator Line */
+        .gold-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #c9a96e, transparent);
+        }
+        
+        /* Card Hover Effect */
+        .craft-card {
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .craft-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .craft-card:hover .craft-img {
+            transform: scale(1.05);
+        }
+        
+        /* Smooth Image Loading */
+        .img-loading {
+            filter: blur(20px);
+            transition: filter 0.8s ease-out;
+        }
+        
+        .img-loaded {
+            filter: blur(0);
+        }
+        
+        /* Navigation */
+        .nav-glass {
+            background: rgba(15, 31, 15, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        
+        /* Stagger Animation Classes */
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .stagger-item.visible {
+            animation: fadeUp 0.8s ease-out forwards;
+        }
+        
+        /* WhatsApp Float */
+        .whatsapp-float {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+        }
+        
+        /* Horizontal Scroll Gallery */
+        .gallery-scroll {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .gallery-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Testimonial Card */
+        .testimonial-card {
+            background: linear-gradient(145deg, rgba(45, 74, 45, 0.3), rgba(26, 46, 26, 0.5));
+            border: 1px solid rgba(201, 169, 110, 0.1);
+        }
+        
+        /* Input Focus */
+        .indi-input:focus {
+            border-color: #c9a96e;
+            box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.1);
+        }
+        
+        /* Loader */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: #0f1f0f;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: #c9a96e;
+            letter-spacing: 0.3em;
+            animation: breathe 2s ease-in-out infinite;
+        }
+        
+        @keyframes breathe {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+        
+        /* Marquee */
+        .marquee-track {
+            animation: marquee 30s linear infinite;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        /* Decorative Elements */
+        .corner-decor {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 1px solid rgba(201, 169, 110, 0.2);
+        }
+        
+        .corner-tl { top: -10px; left: -10px; border-right: none; border-bottom: none; }
+        .corner-tr { top: -10px; right: -10px; border-left: none; border-bottom: none; }
+        .corner-bl { bottom: -10px; left: -10px; border-right: none; border-top: none; }
+        .corner-br { bottom: -10px; right: -10px; border-left: none; border-top: none; }
+    </style>
+<base target="_blank">
+</head>
+<body class="font-body antialiased">
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-text">INDIKARIGAR</div>
+        <div class="mt-4 w-32 h-px bg-gradient-to-r from-transparent via-indi-gold to-transparent"></div>
+        <p class="mt-4 text-indi-gold/60 text-xs tracking-[0.4em] font-body uppercase">Handcrafted with Love</p>
+    </div>
+
+    <!-- Grain Overlay -->
+    <div class="grain-overlay"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot hidden md:block"></div>
+    <div class="cursor-outline hidden md:block"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-glass border-b border-indi-gold/10 transition-all duration-500" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group magnetic-btn">
+                    <div class="relative w-10 h-10">
+                        <svg viewBox="0 0 100 100" class="w-full h-full">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#c9a96e" stroke-width="1" opacity="0.5"/>
+                            <circle cx="50" cy="50" r="35" fill="none" stroke="#c9a96e" stroke-width="0.5" opacity="0.3"/>
+                            <text x="50" y="55" text-anchor="middle" fill="#c9a96e" font-family="Cormorant Garamond" font-size="28" font-style="italic">indi</text>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-serif text-xl text-indi-gold tracking-wide">indi</span>
+                        <span class="font-serif text-sm text-indi-gold/70 -mt-1 tracking-widest">karigar</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center gap-10">
+                    <a href="#story" class="text-sm text-indi-cream/80 hover:text-indi-gold transition-colors duration-300 tracking-wide uppercase magnetic-btn">Our Story</a>
+                    <a href="#collections" class="text-sm text-indi-cream/80 hover:text-indi-gold transition-colors duration-300 tracking-wide uppercase magnetic-btn">Collections</a>
+                    <a href="#artisans" class="text-sm text-indi-cream/80 hover:text-indi-gold transition-colors duration-300 tracking-wide uppercase magnetic-btn">Artisans</a>
+                    <a href="#impact" class="text-sm text-indi-cream/80 hover:text-indi-gold transition-colors duration-300 tracking-wide uppercase magnetic-btn">Impact</a>
+                </div>
+
+                <!-- CTA -->
+                <div class="hidden lg:flex items-center gap-4">
+                    <a href="https://wa.me/917521900880?text=Hi%20Indikarigar!%20I'm%20interested%20in%20your%20handcrafted%20jewelry%20collection.%20Could%20you%20share%20more%20details?" 
+                       target="_blank"
+                       class="magnetic-btn px-6 py-2.5 bg-indi-gold/10 border border-indi-gold/30 text-indi-gold text-sm tracking-wide hover:bg-indi-gold hover:text-indi-deep transition-all duration-500 rounded-sm">
+                        DM to Shop
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="lg:hidden text-indi-gold magnetic-btn" id="mobileMenuBtn">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="lg:hidden hidden bg-indi-deep/95 backdrop-blur-xl border-t border-indi-gold/10" id="mobileMenu">
+            <div class="px-6 py-8 space-y-6">
+                <a href="#story" class="block text-lg text-indi-cream/80 hover:text-indi-gold font-serif">Our Story</a>
+                <a href="#collections" class="block text-lg text-indi-cream/80 hover:text-indi-gold font-serif">Collections</a>
+                <a href="#artisans" class="block text-lg text-indi-cream/80 hover:text-indi-gold font-serif">Artisans</a>
+                <a href="#impact" class="block text-lg text-indi-cream/80 hover:text-indi-gold font-serif">Impact</a>
+                <a href="https://wa.me/917521900880?text=Hi%20Indikarigar!%20I'm%20interested%20in%20your%20handcrafted%20jewelry%20collection.%20Could%20you%20share%20more%20details?" 
+                   target="_blank"
+                   class="inline-block px-6 py-3 bg-indi-gold text-indi-deep font-medium tracking-wide">
+                    DM to Shop
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center overflow-hidden pt-20">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 bg-gradient-to-br from-indi-deep via-indi-forest to-indi-deep"></div>
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-indi-moss/20 to-transparent"></div>
+        
+        <!-- Decorative Circles -->
+        <div class="absolute top-20 left-10 w-64 h-64 rounded-full border border-indi-gold/5 animate-float"></div>
+        <div class="absolute bottom-20 right-20 w-96 h-96 rounded-full border border-indi-gold/5 animate-float" style="animation-delay: 2s;"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <!-- Left Content -->
+                <div class="space-y-8 stagger-container">
+                    <div class="stagger-item">
+                        <p class="text-indi-gold text-sm tracking-[0.4em] uppercase font-medium mb-4">Shopping & Retail</p>
+                        <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl text-indi-ivory leading-[0.95]">
+                            Shop small.<br>
+                            <span class="text-gold-gradient italic">Impact Big.</span>
+                        </h1>
+                    </div>
+                    
+                    <div class="stagger-item">
+                        <p class="text-indi-cream/70 text-lg md:text-xl leading-relaxed max-w-lg font-light">
+                            A purpose-led platform for Indian Artisans. Every piece we offer is handcrafted by real makers with stories woven in gold and heritage.
+                        </p>
+                    </div>
+
+                    <div class="stagger-item flex flex-wrap gap-4 pt-4">
+                        <a href="https://wa.me/917521900880?text=Hi%20Indikarigar!%20I'm%20interested%20in%20exploring%20your%20handcrafted%20jewelry%20collection.%20Could%20you%20share%20your%20latest%20catalog?" 
+                           target="_blank"
+                           class="magnetic-btn group px-8 py-4 bg-indi-gold text-indi-deep font-medium tracking-wide hover:bg-indi-goldLight transition-all duration-500 rounded-sm flex items-center gap-3">
+                            <span>Explore Collection</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <a href="#story" class="magnetic-btn px-8 py-4 border border-indi-gold/30 text-indi-gold hover:border-indi-gold hover:bg-indi-gold/5 transition-all duration-500 rounded-sm">
+                            Our Story
+                        </a>
+                    </div>
+
+                    <div class="stagger-item pt-8 flex items-center gap-8">
+                        <div>
+                            <p class="text-3xl font-serif text-indi-gold">500+</p>
+                            <p class="text-sm text-indi-cream/50 mt-1">Artisan Families</p>
+                        </div>
+                        <div class="w-px h-12 bg-indi-gold/20"></div>
+                        <div>
+                            <p class="text-3xl font-serif text-indi-gold">50+</p>
+                            <p class="text-sm text-indi-cream/50 mt-1">Craft Clusters</p>
+                        </div>
+                        <div class="w-px h-12 bg-indi-gold/20"></div>
+                        <div>
+                            <p class="text-3xl font-serif text-indi-gold">100%</p>
+                            <p class="text-sm text-indi-cream/50 mt-1">Handcrafted</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Image -->
+                <div class="relative stagger-item">
+                    <div class="relative aspect-[3/4] rounded-sm overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-t from-indi-deep/60 via-transparent to-transparent z-10"></div>
+                        <img src="https://github.com/gaur3009-p/d8/blob/main/WhatsApp%20Image%202026-05-17%20at%201.26.51%20PM.jpeg?raw=true" 
+                             alt="Indikarigar Handcrafted Jewelry" 
+                             class="w-full h-full object-cover hero-image img-loading"
+                             onload="this.classList.add('img-loaded')">
+                        
+                        <!-- Floating Badge -->
+                        <div class="absolute bottom-8 left-8 z-20 bg-indi-deep/80 backdrop-blur-md border border-indi-gold/20 p-4 rounded-sm">
+                            <p class="text-indi-gold text-xs tracking-widest uppercase mb-1">Featured</p>
+                            <p class="text-indi-ivory font-serif text-lg">Heritage Collection</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative Frame -->
+                    <div class="absolute -top-4 -right-4 w-full h-full border border-indi-gold/20 rounded-sm -z-10"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-60">
+            <span class="text-xs tracking-widest uppercase text-indi-gold">Scroll</span>
+            <div class="w-px h-12 bg-gradient-to-b from-indi-gold to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="py-8 border-y border-indi-gold/10 bg-indi-forest/30 overflow-hidden">
+        <div class="flex whitespace-nowrap marquee-track">
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">Handcrafted with Love</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">•</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">Rooted in Craft</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">•</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">Made by Hands</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">•</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">Meant to Last</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">•</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">Handcrafted with Love</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">•</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">Rooted in Craft</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">•</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">Made by Hands</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">•</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">Meant to Last</span>
+            <span class="text-4xl md:text-6xl font-serif text-indi-gold/10 mx-8 italic">•</span>
+        </div>
+    </div>
+
+    <!-- Story Section -->
+    <section id="story" class="py-24 lg:py-32 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+                <!-- Image Grid -->
+                <div class="relative">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-4 mt-12">
+                            <div class="aspect-[3/4] rounded-sm overflow-hidden img-reveal">
+                                <img src="https://github.com/gaur3009-p/d8/blob/main/WhatsApp%20Image%202026-05-17%20at%201.26.49%20PM.jpeg?raw=true" 
+                                     alt="Artisan at work" 
+                                     class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="aspect-[3/4] rounded-sm overflow-hidden img-reveal">
+                                <img src="https://github.com/gaur3009-p/d8/blob/main/WhatsApp%20Image%202026-05-17%20at%201.26.53%20PM.jpeg?raw=true" 
+                                     alt="Handcrafted detail" 
+                                     class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                            </div>
+                            <div class="aspect-[3/4] rounded-sm overflow-hidden img-reveal">
+                                <img src="https://github.com/gaur3009-p/d8/blob/main/WhatsApp%20Image%202026-05-17%20at%201.26.50%20PM.jpeg?raw=true" 
+                                     alt="Jewelry crafting" 
+                                     class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Center Badge -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-indi-deep/90 backdrop-blur-md border border-indi-gold/30 rounded-full flex items-center justify-center z-10">
+                        <div class="text-center">
+                            <p class="font-serif text-2xl text-indi-gold">Est.</p>
+                            <p class="text-indi-cream text-xs tracking-widest">2020</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="space-y-8">
+                    <div class="space-y-4">
+                        <p class="text-indi-gold text-sm tracking-[0.3em] uppercase">Our Story</p>
+                        <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl text-indi-ivory leading-tight">
+                            Our jewellery begins long before it reaches you.
+                        </h2>
+                    </div>
+                    
+                    <div class="gold-line w-24"></div>
+                    
+                    <div class="space-y-6 text-indi-cream/70 text-lg leading-relaxed">
+                        <p>
+                            It begins in the quiet corners of India, in the hands of our artisans. Each piece carries the warmth of human touch, the patience of generations, and the soul of our heritage.
+                        </p>
+                        <p>
+                            More than jewellery. It's a legacy in the making. From our hands to yours, each piece is a promise of authenticity, quality, and timeless beauty.
+                        </p>
+                        <p class="font-serif text-xl text-indi-gold/90 italic">
+                            "Thank you for supporting our artisans and keeping our heritage alive."
+                        </p>
+                    </div>
+
+                    <div class="pt-4">
+                        <a href="https://wa.me/917521900880?text=Hi%20Indikarigar!%20I%20love%20your%20story%20and%20would%20like%20to%20know%20more%20about%20your%20artisan%20partnerships." 
+                           target="_blank"
+                           class="magnetic-btn inline-flex items-center gap-3 text-indi-gold hover:text-indi-goldLight transition-colors group">
+                            <span class="tracking-wide">Meet Our Artisans</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collections Section -->
+    <section id="collections" class="py-24 lg:py-32 bg-gradient-to-b from-indi-deep to-indi-forest relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <!-- Header -->
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-6">
+                <p class="text-indi-gold text-sm tracking-[0.3em] uppercase">Collections</p>
+                <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl text-indi-ivory">
+                    Every piece has a <span class="text-gold-gradient italic">story.</span>
+                </h2>
+                <p class="text-indi-cream/60 text-lg">
+                    Rooted in craft. Made by hands. Meant to last. Discover our curated collections designed for every woman.
+                </p>
+            </div>
+
+            <!-- Collection Cards -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1: Heritage -->
+                <div class="craft-card group relative bg-indi-moss/20 border border-indi-gold/10 rounded-sm overflow-hidden">
+                    <div class="aspect-[4/5] overflow-hidden">
+                        <img src="https://github.com/gaur3009-p/d8/blob/main/WhatsApp%20Image%202026-05-17%20at%201.26.51%20PM%20(1).jpeg?raw=true" 
+                             alt="Heritage Collection" 
+                             class="craft-img w-full h-full object-cover transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-indi-deep via-indi-deep/20 to-transparent"></div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <p class="text-indi-gold text-xs tracking-widest uppercase mb-2">Traditional</p>
+                        <h3 class="font-serif text-2xl text-indi-ivory mb-2">Heritage Collection</h3>
+                        <p class="text-indi-cream/60 text-sm mb-4">Timeless pieces inspired by royal Indian craftsmanship</p>
+                        <a href="https://wa.me/917521900880?text=Hi%20Indikarigar!%20I'm%20interested%20in%20the%20Heritage%20Collection.%20Please%20share%20more%20details." 
+                           target="_blank"
+                           class="inline-flex items-center gap-2 text-indi-gold text-sm hover:gap-3 transition-all">
+                            <span>Inquire Now</span>
+                            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 2: Corporate -->
+                <div class="craft-card group relative bg-indi-moss/20 border border-indi-gold/10 rounded-sm overflow-hidden">
+                    <div class="aspect-[4/5] overflow-hidden">
+                        <img src="https://github.com/gaur3009-p/d8/blob/main/WhatsApp%20Image%202026-05-17%20at%201.26.52%20PM%20(2).jpeg?raw=true" 
+                             alt="Corporate Collection" 
+                             class="craft-img w-full h-full object-cover transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-indi-deep via-indi-deep/20 to-transparent"></div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <p class="text-indi-gold text-xs tracking-widest uppercase mb-2">Modern</p>
+                        <h3 class="font-serif text-2xl text-indi-ivory mb-2">Corporate Girlie</h3>
+                        <p class="text-indi-cream/60 text-sm mb-4">Subtle elegance for the modern working woman</p>
+                        <a href="https://wa.me/917521900880?text=Hi%20Indikarigar!%20I'm%20interested%20in%20the%20Corporate%20Collection.%20Please%20share%20more%20details." 
+                           target="_blank"
+                           class="inline-flex items-center gap-2 text-indi-gold text-sm hover:gap-3 transition-all">
+                            <span>Inquire Now</span>
+                            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 3: Coffee -->
+                <div class="craft-card group relative bg-indi-moss/20 border border-indi-gold/10 rounded-sm overflow-hidden">
+                    <div class="aspect-[4/5] overflow-hidden">
+                        <img src="https://github.com/gaur3009-p/d8/blob/main/WhatsApp%20Image%202026-05-17%20at%201.26.50%20PM%20(1).jpeg?raw=true" 
+                             alt="Coffee Collection" 
+                             class="craft-img w-full h-full object-cover transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-indi-deep via-indi-deep/20 to-transparent"></div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <p class="text-indi-gold text-xs tracking-widest uppercase mb-2">Everyday</p>
+                        <h3 class="font-serif text-2xl text-indi-ivory mb-2">Coffee Girlie</h3>
+                        <p class="text-indi-cream/60 text-sm mb-4">Effortless charm for your daily moments</p>
+                        <a href="https://wa.me/917521900880?text=Hi%20Indikarigar!%20I'm%20interested%20in%20the%20Coffee%20Collection.%20Please%20share%20more%20details." 
+                           target="_blank"
+                           class="inline-flex items-center gap-2 text-indi-gold text-sm hover:gap-3 transition-all">
+                            <span>Inquire Now</span>
+                            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View All -->
+            <div class="text-center mt-12">
+                <a href="https://wa.me/917521900880?text=Hi%20Indikarigar!%20I'd%20love%20to%20see%20your%20complete%20catalog%20of%20handcrafted%20jewelry." 
+                   target="_blank"
+                   class="magnetic-btn inline-flex items-center gap-3 px-8 py-4 border border-indi-gold/30 text-indi-gold hover:bg-indi-gold hover:text-indi-deep transition-all duration-500 rounded-sm">
+                    <span>View Complete Catalog</span>
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Artisans Section -->
+    <section id="artisans" class="py-24 lg:py-32 relative overflow-hidden">
+        <div class="absolute inset-0 bg-indi-deep"></div>
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-indi-gold/20 to-transparent"></div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <!-- Content -->
+                <div class="space-y-8 order-2 lg:order-1">
+                    <div class="space-y-4">
+                        <p class="text-indi-gold text-sm tracking-[0.3em] uppercase">The Makers</p>
+                        <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl text-indi-ivory leading-tight">
+                            In the hands of <span class="text-gold-gradient italic">our artisans.</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="gold-line w-24"></div>
+                    
+                    <div class="space-y-6 text-indi-cream/70 text-lg leading-relaxed">
+                        <p>
+                            Behind every piece of Indikarigar jewellery is a master artisan who has spent decades perfecting their craft. These are not just makers — they are keepers of tradition, storytellers through metal and stone.
+                        </p>
+                        <p>
+                            From the narrow lanes of Jaipur to the ancient workshops of Varanasi, we partner with artisan families who have inherited their skills through generations. Your purchase directly supports their livelihood and preserves these dying art forms.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6 pt-4">
+                        <div class="p-4 border border-indi-gold/10 bg-indi-moss/10 rounded-sm">
+                            <i data-lucide="heart-handshake" class="w-6 h-6 text-indi-gold mb-3"></i>
+                            <p class="font-serif text-lg text-indi-ivory">Fair Wages</p>
+                            <p class="text-sm text-indi-cream/50 mt-1">Above-market compensation</p>
+                        </div>
+                        <div class="p-4 border border-indi-gold/10 bg-indi-moss/10 rounded-sm">
+                            <i data-lucide="shield-check" class="w-6 h-6 text-indi-gold mb-3"></i>
+                            <p class="font-serif text-lg text-indi-ivory">Authentic</p>
+                            <p class="text-sm text-indi-cream/50 mt-1">Certified craftsmanship</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image -->
+                <div class="relative order-1 lg:order-2">
+                    <div class="relative aspect-[4/5] rounded-sm overflow-hidden">
+                        <img src="https://github.com/gaur3009-p/d8/blob/main/WhatsApp%20Image%202026-05-17%20at%201.26.52%20PM.jpeg?raw=true" 
+                             alt="Artisan crafting jewelry" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-indi-deep/40 to-transparent"></div>
+                    </div>
+                    
+                    <!-- Floating Quote -->
+                    <div class="absolute -bottom-6 -left-6 bg-indi-deep border border-indi-gold/20 p-6 max-w-xs rounded-sm shadow-2xl">
+                        <i data-lucide="quote" class="w-8 h-8 text-indi-gold/30 mb-2"></i>
+                        <p class="font-serif text-lg text-indi-ivory italic leading-relaxed">
+                            "Every piece I make carries a prayer for the person who will wear it."
+                        </p>
+                        <div class="mt-4 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-indi-gold/20 flex items-center justify-center">
+                                <span class="text-indi-gold font-serif">R</span>
+                            </div>
+                            <div>
+                                <p class="text-indi-ivory text-sm">Ramesh Kumar</p>
+                                <p class="text-indi-gold/60 text-xs">Master Goldsmith, Jaipur</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section id="impact" class="py-24 lg:py-32 bg-gradient-to-b from-indi-forest to-indi-deep relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-6">
+                <p class="text-indi-gold text-sm tracking-[0.3em] uppercase">Our Impact</p>
+                <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl text-indi-ivory">
+                    Shop small. <span class="text-gold-gradient italic">Impact Big.</span>
+                </h2>
+            </div>
+
+            <!-- Impact Stats -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+                <div class="text-center p-8 border border-indi-gold/10 bg-indi-moss/10 rounded-sm hover:border-indi-gold/30 transition-colors duration-500">
+                    <p class="font-serif text-5xl text-indi-gold mb-2 counter" data-target="500">0</p>
+                    <p class="text-indi-cream/60 text-sm tracking-wide uppercase">Artisan Families Supported</p>
+                </div>
+                <div class="text-center p-8 border border-indi-gold/10 bg-indi-moss/10 rounded-sm hover:border-indi-gold/30 transition-colors duration-500">
+                    <p class="font-serif text-5xl text-indi-gold mb-2 counter" data-target="12">0</p>
+                    <p class="text-indi-cream/60 text-sm tracking-wide uppercase">States Across India</p>
+                </div>
+                <div class="text-center p-8 border border-indi-gold/10 bg-indi-moss/10 rounded-sm hover:border-indi-gold/30 transition-colors duration-500">
+                    <p class="font-serif text-5xl text-indi-gold mb-2 counter" data-target="50">0</p>
+                    <p class="text-indi-cream/60 text-sm tracking-wide uppercase">Craft Clusters</p>
+                </div>
+                <div class="text-center p-8 border border-indi-gold/10 bg-indi-moss/10 rounded-sm hover:border-indi-gold/30 transition-colors duration-500">
+                    <p class="font-serif text-5xl text-indi-gold mb-2 counter" data-target="100">0</p>
+                    <p class="text-indi-cream/60 text-sm tracking-wide uppercase">Percent Handcrafted</p>
+                </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="testimonial-card p-8 rounded-sm relative">
+                    <div class="corner-decor corner-tl"></div>
+                    <div class="corner-decor corner-br"></div>
+                    <i data-lucide="quote" class="w-10 h-10 text-indi-gold/20 mb-4"></i>
+                    <p class="text-indi-cream/80 text-lg leading-relaxed mb-6 font-light">
+                        "The quality is unmatched. You can feel the love and care in every piece. Knowing that my purchase supports artisans makes it even more special."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indi-gold/30 to-indi-gold/10 flex items-center justify-center">
+                            <span class="font-serif text-indi-gold text-lg">A</span>
+                        </div>
+                        <div>
+                            <p class="text-indi-ivory font-medium">Ananya Sharma</p>
+                            <p class="text-indi-gold/60 text-sm">Delhi, India</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card p-8 rounded-sm relative">
+                    <div class="corner-decor corner-tl"></div>
+                    <div class="corner-decor corner-br"></div>
+                    <i data-lucide="quote" class="w-10 h-10 text-indi-gold/20 mb-4"></i>
+                    <p class="text-indi-cream/80 text-lg leading-relaxed mb-6 font-light">
+                        "I've never received so many compliments on my jewelry. The Heritage Collection pieces are absolutely stunning and so unique!"
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indi-gold/30 to-indi-gold/10 flex items-center justify-center">
+                            <span class="font-serif text-indi-gold text-lg">P</span>
+                        </div>
+                        <div>
+                            <p class="text-indi-ivory font-medium">Priya Malhotra</p>
+                            <p class="text-indi-gold/60 text-sm">Mumbai, India</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card p-8 rounded-sm relative">
+                    <div class="corner-decor corner-tl"></div>
+                    <div class="corner-decor corner-br"></div>
+                    <i data-lucide="quote" class="w-10 h-10 text-indi-gold/20 mb-4"></i>
+                    <p class="text-indi-cream/80 text-lg leading-relaxed mb-6 font-light">
+                        "The perfect blend of tradition and modern design. I love that every piece tells a story. Customer service via WhatsApp was excellent!"
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indi-gold/30 to-indi-gold/10 flex items-center justify-center">
+                            <span class="font-serif text-indi-gold text-lg">S</span>
+                        </div>
+                        <div>
+                            <p class="text-indi-ivory font-medium">Sarah Johnson</p>
+                            <p class="text-indi-gold/60 text-sm">London, UK</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Scroll -->
+    <section class="py-16 overflow-hidden">
+        <div class="mb-8 px-6 lg:px-8 max-w-7xl mx-auto flex items-center justify-between">
+            <h3 class="font-serif text-2xl text-indi-ivory">Moments of Craft</h3>
+            <div class="flex gap-2">
+                <button class="gallery-prev p-2 border border-indi-gold/20 text-indi-gold hover:bg-indi-gold/10 transition-colors rounded-sm">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <button class="gallery-next p-2 border border-indi-gold/20 text-indi-gold hover:bg-indi-gold/10 transition-colors rounded-sm">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="gallery-scroll flex gap-6 overflow-x-auto px-6 lg:px-8 pb-4 snap-x snap-mandatory" id="galleryTrack">
+            <div class="flex-shrink-0 w-80 snap-center">
+                <div class="aspect-[3/4] rounded-sm overflow-hidden">
+                    <img src="https://github.com/gaur3009-p/d8/blob/main/WhatsApp%20Image%202026-05-17%20at%201.26.53%20PM%20(1).jpeg?raw=true" 
+                         alt="Jewelry detail" 
+                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                </div>
+            </div>
+            <div class="flex-shrink-0 w-80 snap-center">
+                <div class="aspect-[3/4] rounded-sm overflow-hidden">
+                    <img src="https://github.com/gaur3009-p/d8/blob/main/WhatsApp%20Image%202026-05-17%20at%201.26.52%20PM%20(1).jpeg?raw=true" 
+                         alt="Artisan hands" 
+                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                </div>
+            </div>
+            <div class="flex-shrink-0 w-80 snap-center">
+                <div class="aspect-[3/4] rounded-sm overflow-hidden">
+                    <img src="https://github.com/gaur3009-p/d8/blob/main/WhatsApp%20Image%202026-05-17%20at%201.26.51%20PM.jpeg?raw=true" 
+                         alt="Collection piece" 
+                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                </div>
+            </div>
+            <div class="flex-shrink-0 w-80 snap-center">
+                <div class="aspect-[3/4] rounded-sm overflow-hidden">
+                    <img src="https://github.com/gaur3009-p/d8/blob/main/WhatsApp%20Image%202026-05-17%20at%201.26.50%20PM%20(1).jpeg?raw=true" 
+                         alt="Coffee girlie" 
+                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                </div>
+            </div>
+            <div class="flex-shrink-0 w-80 snap-center">
+                <div class="aspect-[3/4] rounded-sm overflow-hidden">
+                    <img src="https://github.com/gaur3009-p/d8/blob/main/WhatsApp%20Image%202026-05-17%20at%201.26.52%20PM%20(2).jpeg?raw=true" 
+                         alt="Corporate style" 
+                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                </div>
+            </div>
+            <div class="flex-shrink-0 w-80 snap-center">
+                <div class="aspect-[3/4] rounded-sm overflow-hidden">
+                    <img src="https://github.com/gaur3009-p/d8/blob/main/WhatsApp%20Image%202026-05-17%20at%201.26.49%20PM.jpeg?raw=true" 
+                         alt="Heritage piece" 
+                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 lg:py-32 relative overflow-hidden">
+        <div class="absolute inset-0 bg-indi-deep"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(201,169,110,0.05)_0%,_transparent_70%)]"></div>
+        
+        <div class="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center space-y-8">
+            <div class="space-y-4">
+                <p class="text-indi-gold text-sm tracking-[0.3em] uppercase">Begin Your Journey</p>
+                <h2 class="font-serif text-4xl md:text-6xl lg:text-7xl text-indi-ivory leading-tight">
+                    This is our craft.<br>
+                    <span class="text-gold-gradient italic">This is Indikarigar.</span>
+                </h2>
+            </div>
+            
+            <p class="text-indi-cream/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+                Join us in celebrating the hands that create, the stories that inspire, and the heritage that binds us all. Your next heirloom awaits.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                <a href="https://wa.me/917521900880?text=Hi%20Indikarigar!%20I'm%20ready%20to%20shop%20your%20beautiful%20handcrafted%20collection.%20Please%20share%20your%20catalog!" 
+                   target="_blank"
+                   class="magnetic-btn group px-10 py-5 bg-indi-gold text-indi-deep font-medium tracking-wide hover:bg-indi-goldLight transition-all duration-500 rounded-sm flex items-center gap-3 text-lg">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    <span>DM to Shop on WhatsApp</span>
+                </a>
+            </div>
+
+            <p class="text-indi-gold/40 text-sm pt-4">
+                <i data-lucide="shield-check" class="w-4 h-4 inline mr-1"></i>
+                Secure • Authentic • Handcrafted with Love
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-indi-charcoal border-t border-indi-gold/10 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Brand -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div class="relative w-10 h-10">
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#c9a96e" stroke-width="1" opacity="0.5"/>
+                                <circle cx="50" cy="50" r="35" fill="none" stroke="#c9a96e" stroke-width="0.5" opacity="0.3"/>
+                                <text x="50" y="55" text-anchor="middle" fill="#c9a96e" font-family="Cormorant Garamond" font-size="28" font-style="italic">indi</text>
+                            </svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-serif text-xl text-indi-gold tracking-wide">indi</span>
+                            <span class="font-serif text-sm text-indi-gold/70 -mt-1 tracking-widest">karigar</span>
+                        </div>
+                    </div>
+                    <p class="text-indi-cream/50 text-sm leading-relaxed">
+                        A purpose-led platform connecting conscious consumers with India's finest artisans. Every piece tells a story.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full border border-indi-gold/20 flex items-center justify-center text-indi-gold hover:bg-indi-gold hover:text-indi-deep transition-all duration-300">
+                            <i data-lucide="instagram" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-indi-gold/20 flex items-center justify-center text-indi-gold hover:bg-indi-gold hover:text-indi-deep transition-all duration-300">
+                            <i data-lucide="facebook" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-indi-gold/20 flex items-center justify-center text-indi-gold hover:bg-indi-gold hover:text-indi-deep transition-all duration-300">
+                            <i data-lucide="twitter" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-serif text-lg text-indi-ivory mb-6">Explore</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#story" class="text-indi-cream/50 hover:text-indi-gold transition-colors text-sm">Our Story</a></li>
+                        <li><a href="#collections" class="text-indi-cream/50 hover:text-indi-gold transition-colors text-sm">Collections</a></li>
+                        <li><a href="#artisans" class="text-indi-cream/50 hover:text-indi-gold transition-colors text-sm">Artisans</a></li>
+                        <li><a href="#impact" class="text-indi-cream/50 hover:text-indi-gold transition-colors text-sm">Our Impact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Collections -->
+                <div>
+                    <h4 class="font-serif text-lg text-indi-ivory mb-6">Collections</h4>
+                    <ul class="space-y-3">
+                        <li><a href="https://wa.me/917521900880?text=Hi!%20Interested%20in%20Heritage%20Collection" target="_blank" class="text-indi-cream/50 hover:text-indi-gold transition-colors text-sm">Heritage</a></li>
+                        <li><a href="https://wa.me/917521900880?text=Hi!%20Interested%20in%20Corporate%20Collection" target="_blank" class="text-indi-cream/50 hover:text-indi-gold transition-colors text-sm">Corporate Girlie</a></li>
+                        <li><a href="https://wa.me/917521900880?text=Hi!%20Interested%20in%20Coffee%20Collection" target="_blank" class="text-indi-cream/50 hover:text-indi-gold transition-colors text-sm">Coffee Girlie</a></li>
+                        <li><a href="https://wa.me/917521900880?text=Hi!%20Interested%20in%20Introvert%20Collection" target="_blank" class="text-indi-cream/50 hover:text-indi-gold transition-colors text-sm">Introvert Girlie</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-serif text-lg text-indi-ivory mb-6">Connect</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-3 text-indi-cream/50 text-sm">
+                            <i data-lucide="phone" class="w-4 h-4 text-indi-gold"></i>
+                            <span>+91 75219 00880</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-indi-cream/50 text-sm">
+                            <i data-lucide="mail" class="w-4 h-4 text-indi-gold"></i>
+                            <span>hello@indikarigar.com</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-indi-cream/50 text-sm">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-indi-gold"></i>
+                            <span>India</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="https://wa.me/917521900880?text=Hi%20Indikarigar!" 
+                       target="_blank"
+                       class="mt-6 inline-flex items-center gap-2 px-6 py-3 bg-green-600/20 border border-green-500/30 text-green-400 rounded-sm hover:bg-green-600/30 transition-all text-sm">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i>
+                        <span>Chat on WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="border-t border-indi-gold/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-indi-cream/30 text-sm">
+                    © 2026 Indikarigar. Handcrafted with love in India.
+                </p>
+                <div class="flex gap-6">
+                    <a href="#" class="text-indi-cream/30 hover:text-indi-gold text-sm transition-colors">Privacy</a>
+                    <a href="#" class="text-indi-cream/30 hover:text-indi-gold text-sm transition-colors">Terms</a>
+                    <a href="#" class="text-indi-cream/30 hover:text-indi-gold text-sm transition-colors">Shipping</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/917521900880?text=Hi%20Indikarigar!%20I'm%20interested%20in%20your%20handcrafted%20jewelry%20collection.%20Could%20you%20share%20more%20details?" 
+       target="_blank"
+       class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-600 rounded-full flex items-center justify-center shadow-2xl whatsapp-float hover:scale-110 transition-transform duration-300 group">
+        <i data-lucide="message-circle" class="w-7 h-7 text-white"></i>
+        <span class="absolute right-16 bg-indi-deep border border-indi-gold/20 text-indi-ivory text-xs px-3 py-1.5 rounded-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+            DM to Shop
+        </span>
+    </a>
+
+    <!-- Back to Top -->
+    <button id="backToTop" class="fixed bottom-24 right-6 z-40 w-10 h-10 bg-indi-gold/10 border border-indi-gold/20 rounded-full flex items-center justify-center text-indi-gold opacity-0 pointer-events-none transition-all duration-300 hover:bg-indi-gold hover:text-indi-deep">
+        <i data-lucide="arrow-up" class="w-4 h-4"></i>
+    </button>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+                initAnimations();
+            }, 1500);
+        });
+
+        // Custom Cursor
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Magnetic Buttons
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+                cursorOutline.classList.add('hover');
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+                cursorOutline.classList.remove('hover');
+            });
+        });
+
+        // Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                navbar.classList.add('nav-glass');
+            } else {
+                navbar.classList.remove('nav-glass');
+            }
+            
+            // Back to top
+            const backToTop = document.getElementById('backToTop');
+            if (currentScroll > 500) {
+                backToTop.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                backToTop.classList.add('opacity-0', 'pointer-events-none');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // GSAP Animations
+        function initAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Stagger Items
+            const staggerContainers = document.querySelectorAll('.stagger-container');
+            staggerContainers.forEach(container => {
+                const items = container.querySelectorAll('.stagger-item');
+                items.forEach((item, index) => {
+                    gsap.to(item, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        delay: index * 0.15,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: item,
+                            start: "top 85%",
+                            toggleActions: "play none none none"
+                        }
+                    });
+                });
+            });
+
+            // Image Reveal
+            const imgReveals = document.querySelectorAll('.img-reveal');
+            imgReveals.forEach(img => {
+                ScrollTrigger.create({
+                    trigger: img,
+                    start: "top 80%",
+                    onEnter: () => img.classList.add('revealed')
+                });
+            });
+
+            // Parallax Hero Image
+            gsap.to('.hero-image', {
+                yPercent: 20,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".hero-image",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            // Counter Animation
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                gsap.to(counter, {
+                    innerHTML: target,
+                    duration: 2,
+                    snap: { innerHTML: 1 },
+                    scrollTrigger: {
+                        trigger: counter,
+                        start: "top 85%",
+                    }
+                });
+            });
+
+            // Section Headers
+            gsap.utils.toArray('section h2').forEach(header => {
+                gsap.from(header, {
+                    opacity: 0,
+                    y: 30,
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: header,
+                        start: "top 85%",
+                    }
+                });
+            });
+        }
+
+        // Gallery Scroll Buttons
+        const galleryTrack = document.getElementById('galleryTrack');
+        document.querySelector('.gallery-prev').addEventListener('click', () => {
+            galleryTrack.scrollBy({ left: -340, behavior: 'smooth' });
+        });
+        document.querySelector('.gallery-next').addEventListener('click', () => {
+            galleryTrack.scrollBy({ left: 340, behavior: 'smooth' });
+        });
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
